@@ -42,7 +42,7 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1QV3SEu5BssvTLps-Sb8i5a54W
 // Submit score endpoint
 app.post('/api/submit-score', async (req, res) => {
   try {
-    const { firstName, lastName, company, email, displayName, score } = req.body;
+    const { firstName, lastName, company, email, displayName, score, communicationOptIn } = req.body;
     
     // Validate input
     if (!firstName || !lastName || !company || !email || score === undefined) {
@@ -55,7 +55,7 @@ app.post('/api/submit-score', async (req, res) => {
     // Add to Google Sheets
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:G',
+      range: 'Sheet1!A:H', // Updated range to include new column
       valueInputOption: 'USER_ENTERED',
       resource: {
         values: [[
@@ -65,7 +65,8 @@ app.post('/api/submit-score', async (req, res) => {
           email,
           displayName || '',
           score,
-          new Date().toISOString()
+          new Date().toISOString(),
+          communicationOptIn ? 'Yes' : 'No' // Add communication preference
         ]]
       }
     });
