@@ -1,0 +1,10 @@
+# Sensitive files
+your-credentials.json
+.env
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Database
+gameScores.db
